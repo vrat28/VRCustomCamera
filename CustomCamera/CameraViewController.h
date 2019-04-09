@@ -21,6 +21,7 @@
 @property (nonatomic, weak) IBOutlet UIButton * btnCancel;
 
 +(instancetype)loadFromStoryBoard;
+-(instancetype)initWithNib;
 
 @end
 
