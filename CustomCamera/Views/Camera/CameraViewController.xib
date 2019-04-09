@@ -12,12 +12,16 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CameraViewController">
             <connections>
-                <outlet property="bottomContainerView" destination="ZHk-62-ugf" id="nn8-vd-CNe"/>
                 <outlet property="btnCancel" destination="XKx-I6-pO4" id="A74-Es-uVO"/>
                 <outlet property="btnCapture" destination="jcc-Ty-uge" id="NTf-Bk-PnB"/>
+                <outlet property="btnFlash" destination="H2O-h8-ysJ" id="puL-RB-c7Q"/>
+                <outlet property="btnFlashAuto" destination="T9C-zM-wu3" id="Olb-tx-LIB"/>
+                <outlet property="btnFlashOff" destination="aRl-Db-ZXf" id="zsm-yp-7aw"/>
+                <outlet property="btnFlashOn" destination="mNm-hJ-BaG" id="JwH-aa-7fB"/>
                 <outlet property="btnSwitch" destination="HpH-IV-OQL" id="rIw-5H-xvY"/>
                 <outlet property="cameraView" destination="YeE-hs-oNo" id="Hu8-1G-QAj"/>
                 <outlet property="containerView" destination="cuy-s6-uDO" id="G4W-UU-ijB"/>
+                <outlet property="flashContainerView" destination="I7O-cU-s8y" id="bJ7-uN-9Na"/>
                 <outlet property="topHeaderView" destination="o6F-cb-8co" id="XaY-2D-aJo"/>
                 <outlet property="view" destination="iN0-l3-epB" id="QRg-zM-wQT"/>
             </connections>
@@ -31,10 +35,76 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o6F-cb-8co">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2O-h8-ysJ">
+                                    <rect key="frame" x="8" y="7" width="46" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Button"/>
+                                    <connections>
+                                        <action selector="flashButtonClicked:" destination="-1" eventType="touchUpInside" id="4FC-cB-NKy"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I7O-cU-s8y">
+                                    <rect key="frame" x="101.5" y="0.0" width="172" height="44"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="I8h-sR-WYL">
+                                            <rect key="frame" x="0.0" y="0.0" width="172" height="44"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T9C-zM-wu3">
+                                                    <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="Auto"/>
+                                                    <state key="selected">
+                                                        <color key="titleColor" red="0.95686274510000002" green="0.60784313729999995" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="flashModeSeleced:" destination="-1" eventType="touchUpInside" id="Vkv-XL-o4z"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mNm-hJ-BaG">
+                                                    <rect key="frame" x="64" y="0.0" width="44" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="44" id="kyf-hS-VJ8"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="On"/>
+                                                    <state key="selected">
+                                                        <color key="titleColor" red="0.95686274510000002" green="0.60784313729999995" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="flashModeSeleced:" destination="-1" eventType="touchUpInside" id="4og-OT-gC9"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRl-Db-ZXf">
+                                                    <rect key="frame" x="128" y="0.0" width="44" height="44"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <state key="normal" title="Off"/>
+                                                    <state key="selected">
+                                                        <color key="titleColor" red="0.95686274510000002" green="0.60784313729999995" blue="0.13725490200000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="flashModeSeleced:" destination="-1" eventType="touchUpInside" id="v4u-N9-YOL"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="I8h-sR-WYL" firstAttribute="top" secondItem="I7O-cU-s8y" secondAttribute="top" id="AJM-Wq-p2m"/>
+                                        <constraint firstItem="I8h-sR-WYL" firstAttribute="leading" secondItem="I7O-cU-s8y" secondAttribute="leading" id="Poy-S2-Elm"/>
+                                        <constraint firstAttribute="bottom" secondItem="I8h-sR-WYL" secondAttribute="bottom" id="Wyr-lo-9NO"/>
+                                        <constraint firstAttribute="trailing" secondItem="I8h-sR-WYL" secondAttribute="trailing" id="Xwe-9j-Inm"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="HNJ-Yd-6Wu"/>
+                                <constraint firstItem="I7O-cU-s8y" firstAttribute="top" secondItem="o6F-cb-8co" secondAttribute="top" id="06e-WM-NXf"/>
+                                <constraint firstAttribute="height" constant="44" id="HNJ-Yd-6Wu"/>
+                                <constraint firstItem="I7O-cU-s8y" firstAttribute="centerX" secondItem="o6F-cb-8co" secondAttribute="centerX" id="sjX-gz-ozP"/>
+                                <constraint firstAttribute="bottom" secondItem="I7O-cU-s8y" secondAttribute="bottom" id="w3x-Rj-K2f"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZz-7T-wRM">
@@ -52,7 +122,7 @@
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcc-Ty-uge">
                                             <rect key="frame" x="131.5" y="0.0" width="112" height="100"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="tintColor" red="0.83529411760000005" green="0.29411764709999999" blue="0.37647058820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <action selector="captureClicked:" destination="-1" eventType="touchUpInside" id="GUL-sA-P2L"/>
@@ -68,7 +138,7 @@
                                     </subviews>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="ZHk-62-ugf" firstAttribute="top" secondItem="VZz-7T-wRM" secondAttribute="top" id="810-aU-eie"/>
                                 <constraint firstAttribute="bottom" secondItem="ZHk-62-ugf" secondAttribute="bottom" id="cMP-Ei-0ee"/>
@@ -78,11 +148,11 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeE-hs-oNo">
-                            <rect key="frame" x="0.0" y="50" width="375" height="517"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <rect key="frame" x="0.0" y="44" width="375" height="523"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="YeE-hs-oNo" firstAttribute="leading" secondItem="cuy-s6-uDO" secondAttribute="leading" id="PL5-9F-ZTR"/>
                         <constraint firstAttribute="trailing" secondItem="YeE-hs-oNo" secondAttribute="trailing" id="QMU-Jp-E65"/>
@@ -105,7 +175,7 @@
                 <constraint firstItem="cuy-s6-uDO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="rMs-nU-88a"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="138.40000000000001" y="153.37331334332833"/>
+            <point key="canvasLocation" x="138.40000000000001" y="152.47376311844079"/>
         </view>
     </objects>
 </document>

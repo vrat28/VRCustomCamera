@@ -20,6 +20,11 @@
 @property (nonatomic, weak) IBOutlet UIButton * btnSwitch;
 @property (nonatomic, weak) IBOutlet UIButton * btnCancel;
 
+@property (nonatomic,weak) IBOutlet UIView * flashContainerView;
+@property (nonatomic,weak)  IBOutlet UIButton * btnFlashAuto;
+@property (nonatomic,weak)  IBOutlet UIButton * btnFlashOn;
+@property (nonatomic,weak)  IBOutlet UIButton * btnFlashOff;
+
 +(instancetype)loadFromStoryBoard;
 -(instancetype)initWithNib;
 
