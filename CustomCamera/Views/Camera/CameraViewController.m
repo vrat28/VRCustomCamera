@@ -13,8 +13,9 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 @property (nonatomic, strong) AVCapturePhotoOutput *stillImageOutput;
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
-@property (nonatomic, strong) UIVisualEffectView *blurView;
 @property (nonatomic, assign) AVCaptureFlashMode  flashMode;
+@property (strong, nonatomic) UIVisualEffectView *blurView;
+@property (nonatomic, strong) NSOperationQueue * sessionQueue;
 
 @end
 
@@ -30,12 +31,13 @@ return self;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-     [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:YES];
     [self setNeedsStatusBarAppearanceUpdate];
-    
-    
     [self setUpViews];
+    
+    self.sessionQueue = [NSOperationQueue new];
+    UIBlurEffect * blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleProminent];
+   // self.blurView = blurEffect;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -44,13 +46,20 @@ return self;
     return YES;
 }
 
+
+-(AVCaptureDevice *)captureDeviceWithPosition:(AVCaptureDevicePosition)position {
+return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:position];
+}
+
 -(void)setUpViews {
     self.session = [AVCaptureSession new];
     self.session.sessionPreset = AVCaptureSessionPresetPhoto;
     
-    AVCaptureDevice * backCamera = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if (!backCamera) {
+    AVCaptureDevice * backCamera = [self captureDeviceWithPosition:AVCaptureDevicePositionBack];
+  //  [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
+    
+    if (!backCamera) {
         return;
     }
     
@@ -75,17 +84,17 @@ return self;
     if (self.videoPreviewLayer) {
         self.videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspect;
         self.videoPreviewLayer.connection.videoOrientation = AVCaptureVideoOrientationPortrait;
-        [self.view.layer addSublayer:self.videoPreviewLayer];
+        [self.cameraView.layer addSublayer:self.videoPreviewLayer];
     }
     
-    self.videoPreviewLayer.frame = _cameraView.frame;
+   
     __weak typeof(self) weakSelf = self;
     dispatch_queue_t globalQueue =  dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     dispatch_async(globalQueue, ^{
         [weakSelf.session startRunning];
        
         dispatch_async(dispatch_get_main_queue(), ^{
-           // weakSelf.videoPreviewLayer.frame = weakSelf.cameraView.bounds;
+            weakSelf.videoPreviewLayer.frame = weakSelf.cameraView.bounds;
             [weakSelf setupUI];
         });
         //Step 13
@@ -97,7 +106,7 @@ return self;
     _topHeaderView.backgroundColor = [UIColor blackColor];
     _bottomContainerView.backgroundColor = [UIColor blackColor];
     _btnCapture.clipsToBounds = YES;
-    _btnCapture.layer.cornerRadius = _btnCapture.frame.size.height/2;
+    _btnCapture.layer.cornerRadius = _btnCapture.frame.size.width/2;
 }
 
 -(IBAction)btnBackPressed:(id)sender {
@@ -129,7 +138,64 @@ return self;
 }
 
 -(IBAction)switchClicked:(id)sender {
-
+    
+    
+    __weak typeof( self) weakSelf = self;
+    if (self.session == nil) return ;
+    
+    // Stop the session since we will animate switch transition
+    [self.session stopRunning];
+    
+    NSBlockOperation * switchOperation = [NSBlockOperation blockOperationWithBlock:^{
+        
+        AVCaptureDeviceInput * currentInput = [weakSelf.session.inputs firstObject];
+        AVCaptureDevice * cameraToSwitch = nil;
+        
+        if (currentInput.device.position == AVCaptureDevicePositionBack) {
+            cameraToSwitch = [weakSelf captureDeviceWithPosition:AVCaptureDevicePositionFront];
+        } else {
+            cameraToSwitch = [weakSelf captureDeviceWithPosition:AVCaptureDevicePositionBack];
+        }
+        
+        // Switch the flash indicator
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.btnFlash.hidden = (cameraToSwitch.isFlashAvailable == NO);
+        });
+        
+        //Remove the previous camera
+        
+        [weakSelf.session removeInput:currentInput];
+        
+        NSError * error = nil;
+        
+        // Get the new input with the new camera device
+        
+        currentInput = [AVCaptureDeviceInput deviceInputWithDevice:cameraToSwitch error:&error];
+        if (!currentInput) return ;
+        
+        [weakSelf.session addInput:currentInput];
+    }];
+    
+    switchOperation.completionBlock = ^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (!weakSelf.session) return ;
+            
+            [weakSelf.session startRunning];
+            [weakSelf.blurView removeFromSuperview];
+        });
+        
+    };
+    
+    switchOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
+    
+    //TODO Handle blur view
+    
+    [UIView transitionWithView:weakSelf.cameraView duration:0.3f options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionAllowAnimatedContent animations:nil completion:^(BOOL finished) {
+       [weakSelf.sessionQueue addOperation:switchOperation];
+    }];
+    
 }
 
 
@@ -200,6 +266,22 @@ return self;
 }
 
 
+-(void)enableCamera {
+
+    if (_session ) return;
+    
+    NSBlockOperation * operation = [self captureOperation];
+    self.btnFlash.hidden = YES;
+    
+
+}
+
+
+-(NSBlockOperation *)captureOperation {
+return [NSBlockOperation new];
+}
+
+
 #pragma mark - Photo Capture delegates
 
 -(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(AVCaptureBracketedStillImageSettings *)bracketSettings error:(NSError *)error {
@@ -225,6 +307,13 @@ return self;
     
     }
 
+}
+-(void)viewDidLayoutSubviews {
 
+    [super viewDidLayoutSubviews];
+    _videoPreviewLayer.frame = _cameraView.bounds;
+    [self.view layoutIfNeeded];
+    
+    
 }
 @end
