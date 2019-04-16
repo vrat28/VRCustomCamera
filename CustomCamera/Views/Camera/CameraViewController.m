@@ -74,8 +74,29 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
         if ([self.session canAddInput:input] && [self.session canAddOutput:self.stillImageOutput]) {
             [self.session addInput:input];
             [self.session addOutput:self.stillImageOutput];
-            [self setUpLivePreview];
+            [self setUpLiveCameraPreviewLayer];
         }
+    
+        // enable autofocus
+        if ([backCamera isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]){
+            [backCamera lockForConfiguration:&error];
+            backCamera.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+            [backCamera unlockForConfiguration];
+        }
+        
+         AVCapturePhotoSettings * photoSettings = [AVCapturePhotoSettings photoSettings];
+            NSError *error = nil;
+            BOOL success = [backCamera lockForConfiguration:&error];
+            if (success) {
+            
+                if ([backCamera hasFlash]) {
+                    photoSettings.flashMode = AVCaptureFlashModeAuto;
+                }
+                else {
+                    photoSettings.flashMode = AVCaptureFlashModeOff;
+                }
+            }
+            [backCamera unlockForConfiguration];
     }
 }
 -(void)setUpLivePreview {
@@ -159,7 +180,7 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
         
         // Switch the flash indicator
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.btnFlash.hidden = (cameraToSwitch.isFlashAvailable == NO);
+           // weakSelf.btnFlash.hidden = (cameraToSwitch.isFlashAvailable == NO);
         });
         
         //Remove the previous camera
@@ -218,6 +239,30 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
     return nil;
 }
 
+-(void)setFlashMode:(AVCaptureFlashMode)flashMode {
+    _flashMode = flashMode;
+    [self updateFlashButton];
+     [self updateFlashModeState];
+
+}
+
+-(void)updateFlashButton {
+
+NSString * imageName;
+    switch (_flashMode) {
+        case AVCaptureFlashModeAuto:
+            imageName = Image_Flash_auto;
+            break;
+            
+        case AVCaptureFlashModeOn:
+            imageName = Image_Flash_on;
+            break;
+        default:
+            imageName = Image_Flash_off;
+            break;
+    }
+     [_btnFlash setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+}
 
 -(void)updateFlashModeState{
     if (![self currentDevice]) {
@@ -228,28 +273,35 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
     _btnFlashAuto.selected = (self.flashMode == AVCaptureFlashModeAuto);
     
     AVCaptureDevice *device = [self currentDevice];
+    AVCapturePhotoSettings * photoSettings = [AVCapturePhotoSettings photoSettings];
     NSError *error = nil;
-    BOOL success = [device lockForConfiguration:&error];
-    if (success) {
-        device.flashMode = self.flashMode;
-    }
-    [device unlockForConfiguration];
+    
+    if ([device hasFlash]) {
+            BOOL success = [device lockForConfiguration:&error];
+            if (success) {
+                photoSettings.flashMode = self.flashMode;
+            }
+            [device unlockForConfiguration];
+        }
 }
 
 -(IBAction)flashModeSeleced:(id)sender {
 
     if (sender == self.btnFlashAuto) {
-        _flashMode = AVCaptureFlashModeAuto;
+        self.flashMode = AVCaptureFlashModeAuto;
     }
      else if (sender == self.btnFlashOn) {
-        _flashMode = AVCaptureFlashModeOn;
+        self.flashMode = AVCaptureFlashModeOn;
      }
      else {
-     _flashMode = AVCaptureFlashModeOff;
+        self.flashMode = AVCaptureFlashModeOff;
      }
      [self updateFlashModeState];
      [self animateFlashButtonOptions];
 }
+
+
+
 
 -(void)animateFlashButtonOptions
 {
@@ -266,7 +318,7 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
 }
 
 
--(void)enableCamera {
+-(void)enableCameraModule{
 
     if (_session ) return;
     

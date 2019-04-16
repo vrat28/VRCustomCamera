@@ -38,9 +38,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2O-h8-ysJ">
-                                    <rect key="frame" x="21" y="11" width="20" height="22"/>
+                                    <rect key="frame" x="19" y="10" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" image="flash"/>
+                                    <state key="normal" image="flash_auto"/>
                                     <connections>
                                         <action selector="flashButtonClicked:" destination="-1" eventType="touchUpInside" id="4FC-cB-NKy"/>
                                     </connections>
@@ -108,20 +108,20 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZz-7T-wRM">
-                            <rect key="frame" x="0.0" y="562" width="375" height="105"/>
+                            <rect key="frame" x="0.0" y="547" width="375" height="120"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ZHk-62-ugf">
-                                    <rect key="frame" x="0.0" y="5" width="375" height="95"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="ZHk-62-ugf">
+                                    <rect key="frame" x="0.0" y="5" width="375" height="110"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XKx-I6-pO4">
-                                            <rect key="frame" x="0.0" y="0.0" width="111.5" height="95"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="105" height="110"/>
                                             <state key="normal" title="cancel"/>
                                             <connections>
                                                 <action selector="btnDismiss:" destination="-1" eventType="touchUpInside" id="FBL-tP-zWg"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcc-Ty-uge">
-                                            <rect key="frame" x="131.5" y="0.0" width="112" height="95"/>
+                                            <rect key="frame" x="135" y="0.0" width="105" height="110"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="tintColor" red="0.83529411760000005" green="0.29411764709999999" blue="0.37647058820000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal" image="capture"/>
@@ -130,7 +130,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HpH-IV-OQL">
-                                            <rect key="frame" x="263.5" y="0.0" width="111.5" height="95"/>
+                                            <rect key="frame" x="270" y="0.0" width="105" height="110"/>
                                             <state key="normal" image="camera_rear"/>
                                             <state key="selected" image="camera_front"/>
                                             <connections>
@@ -145,12 +145,12 @@
                                 <constraint firstItem="ZHk-62-ugf" firstAttribute="top" secondItem="VZz-7T-wRM" secondAttribute="top" constant="5" id="810-aU-eie"/>
                                 <constraint firstAttribute="bottom" secondItem="ZHk-62-ugf" secondAttribute="bottom" constant="5" id="cMP-Ei-0ee"/>
                                 <constraint firstItem="ZHk-62-ugf" firstAttribute="leading" secondItem="VZz-7T-wRM" secondAttribute="leading" id="d7L-E8-pO8"/>
-                                <constraint firstAttribute="height" constant="105" id="j0V-BD-bYD"/>
+                                <constraint firstAttribute="height" constant="120" id="j0V-BD-bYD"/>
                                 <constraint firstAttribute="trailing" secondItem="ZHk-62-ugf" secondAttribute="trailing" id="mmR-SQ-UqV"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YeE-hs-oNo">
-                            <rect key="frame" x="0.0" y="44" width="375" height="518"/>
+                            <rect key="frame" x="0.0" y="44" width="375" height="503"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                     </subviews>
@@ -184,6 +184,6 @@
         <image name="camera_front" width="44" height="44"/>
         <image name="camera_rear" width="44" height="44"/>
         <image name="capture" width="100" height="100"/>
-        <image name="flash" width="20" height="20"/>
+        <image name="flash_auto" width="24" height="24"/>
     </resources>
 </document>
