@@ -250,7 +250,10 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
         AVCapturePhotoSettings * photoSettings = [AVCapturePhotoSettings photoSettings];
         photoSettings.autoStillImageStabilizationEnabled = true;
         photoSettings.highResolutionPhotoEnabled = true;
-        photoSettings.flashMode = self.flashMode;
+        
+        if ([[self currentDevice] hasFlash]) {
+            photoSettings.flashMode = self.flashMode;
+        }
         [_stillImageOutput capturePhotoWithSettings:photoSettings delegate:self];
     }
 }
@@ -316,8 +319,6 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
     switchOperation.queuePriority = NSOperationQueuePriorityVeryHigh;
     
     //TODO Handle blur view
-    
-   
     
     [UIView transitionWithView:weakSelf.cameraView duration:0.3f options:UIViewAnimationOptionTransitionFlipFromLeft | UIViewAnimationOptionAllowAnimatedContent animations:nil completion:^(BOOL finished) {
        [weakSelf.sessionQueue addOperation:switchOperation];
@@ -405,9 +406,6 @@ NSString * imageName;
      [self animateFlashButtonOptions];
 }
 
-
-
-
 -(void)animateFlashButtonOptions
 {
     __weak typeof(self) weakSelf = self;
@@ -419,22 +417,6 @@ NSString * imageName;
             weakSelf.flashContainerView.alpha = 0.0f;
        }
     }];
-}
-
-
--(void)enableCameraModule{
-
-    if (_session ) return;
-    
-    NSBlockOperation * operation = [self captureOperation];
-    self.btnFlash.hidden = YES;
-    
-
-}
-
-
--(NSBlockOperation *)captureOperation {
-return [NSBlockOperation new];
 }
 
 
@@ -523,8 +505,6 @@ return [NSBlockOperation new];
 -(IBAction)btnRetakeClicked:(id)sender{
     [self togglePreviewMode:NO];
 }
-
-
 
 -(void)pinView:(UIView *)view with:(UIView *)superview {
 
