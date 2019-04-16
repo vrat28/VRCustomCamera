@@ -10,20 +10,10 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface CameraViewController : UIViewController
+@property (nonatomic,copy) void (^completionHandler) (UIImage *);
+@property (nonatomic,strong) NSString * leftPreviewButtonTitle;
+@property (nonatomic,strong) NSString * rightPreviewButtonTitle;
 
-@property (nonatomic,weak) IBOutlet UIView * topHeaderView;
-@property (nonatomic, weak) IBOutlet UIView * bottomContainerView;
-@property (nonatomic, weak) IBOutlet UIView * cameraView;
-@property (nonatomic, weak) IBOutlet UIView * containerView;
-@property (nonatomic, weak) IBOutlet UIButton * btnFlash;
-@property (nonatomic, weak) IBOutlet UIButton * btnCapture;
-@property (nonatomic, weak) IBOutlet UIButton * btnSwitch;
-@property (nonatomic, weak) IBOutlet UIButton * btnCancel;
-
-@property (nonatomic,weak) IBOutlet UIView * flashContainerView;
-@property (nonatomic,weak)  IBOutlet UIButton * btnFlashAuto;
-@property (nonatomic,weak)  IBOutlet UIButton * btnFlashOn;
-@property (nonatomic,weak)  IBOutlet UIButton * btnFlashOff;
 
 +(instancetype)loadFromStoryBoard;
 -(instancetype)initWithNib;
