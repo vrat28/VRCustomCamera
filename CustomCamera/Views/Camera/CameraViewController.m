@@ -118,8 +118,10 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
 
 -(void)enableCamera {
     self.session = [AVCaptureSession new];
-    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
     
+    [self.session beginConfiguration];
+    self.session.sessionPreset = AVCaptureSessionPresetPhoto;
+   
     AVCaptureDevice * backCamera = [self captureDeviceWithPosition:AVCaptureDevicePositionBack];
 
     if (!backCamera) {
@@ -137,10 +139,16 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
             [self.session addOutput:self.stillImageOutput];
             [self setUpLiveCameraPreviewLayer];
         }
+        
+        
+         [self.session commitConfiguration];
     
         // enable autofocus
         if ([backCamera isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]){
             [backCamera lockForConfiguration:&error];
+
+            CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
+            [backCamera setFocusPointOfInterest:autofocusPoint];
             backCamera.focusMode = AVCaptureFocusModeContinuousAutoFocus;
             [backCamera unlockForConfiguration];
         }
@@ -162,7 +170,11 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
     if (success) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([device hasFlash]) {
-                photoSettings.flashMode = weakSelf.flashMode;
+            
+                if ([weakSelf.stillImageOutput.supportedFlashModes containsObject:@(self.flashMode)]) {
+                    photoSettings.flashMode = weakSelf.flashMode;
+                }
+    
                 weakSelf.topHeaderView.hidden = NO;
             }
             else {
@@ -247,16 +259,64 @@ return [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWi
 -(IBAction)captureClicked:(id)sender{
     
     if (_stillImageOutput) {
-        AVCapturePhotoSettings * photoSettings = [AVCapturePhotoSettings photoSettings];
-        photoSettings.autoStillImageStabilizationEnabled = true;
-        photoSettings.highResolutionPhotoEnabled = true;
+
+    //[self.session stopRunning];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
+    AVCapturePhotoSettings* photoSettings;
+    
+    if (@available(iOS 11.0, *)) {
+            if ([self.stillImageOutput.availablePhotoCodecTypes containsObject:AVVideoCodecTypeHEVC]) {
+                photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{ AVVideoCodecKey : AVVideoCodecTypeHEVC }];
+            }
+            else {
+                photoSettings = [AVCapturePhotoSettings photoSettings];
+            }
+        } else {
+            photoSettings = [AVCapturePhotoSettings photoSettings];
+            // Fallback on earlier versions
+        }
+
+        photoSettings.highResolutionPhotoEnabled =YES;
+        photoSettings.autoStillImageStabilizationEnabled = self.stillImageOutput.isStillImageStabilizationSupported;
+
+        if ([[self currentDevice] isFlashAvailable]) {
+                photoSettings.flashMode = self.flashMode;
+        }else {
+                photoSettings.flashMode = AVCaptureFlashModeOff;
+        }
+         [self.stillImageOutput capturePhotoWithSettings:photoSettings delegate:self];
+});
+
+    return;
+        AVCapturePhotoSettings* photoSettings;
+        // Capture HEIF photos when supported, with the flash set to enable auto- and high-resolution photos.
+        if (@available(iOS 11.0, *)) {
+            if ([self.stillImageOutput.availablePhotoCodecTypes containsObject:AVVideoCodecTypeHEVC]) {
+                photoSettings = [AVCapturePhotoSettings photoSettingsWithFormat:@{ AVVideoCodecKey : AVVideoCodecTypeHEVC }];
+            }
+            else {
+                photoSettings = [AVCapturePhotoSettings photoSettings];
+            }
+        } else {
+        
+            photoSettings = [AVCapturePhotoSettings photoSettings];
+            // Fallback on earlier versions
+        }
+
+      //  photoSettings.autoStillImageStabilizationEnabled = true;
+       // photoSettings.highResolutionPhotoEnabled = true;
         
         if ([[self currentDevice] hasFlash]) {
-            photoSettings.flashMode = self.flashMode;
+            if ([[self.stillImageOutput supportedFlashModes] containsObject:@(self.flashMode)]) {
+                photoSettings.flashMode = self.flashMode;
+            }
         }
         [_stillImageOutput capturePhotoWithSettings:photoSettings delegate:self];
+       
     }
 }
+
 
 -(IBAction)switchClicked:(id)sender {
     
@@ -367,7 +427,11 @@ NSString * imageName;
             imageName = Image_Flash_off;
             break;
     }
-     [_btnFlash setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_btnFlash setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    });
+    
 }
 
 -(void)updateFlashModeState{
@@ -382,7 +446,7 @@ NSString * imageName;
     AVCapturePhotoSettings * photoSettings = [AVCapturePhotoSettings photoSettings];
     NSError *error = nil;
     
-    if ([device hasFlash]) {
+    if ([device isFlashAvailable]) {
             BOOL success = [device lockForConfiguration:&error];
             if (success) {
                 photoSettings.flashMode = self.flashMode;
@@ -436,20 +500,21 @@ NSString * imageName;
     });
 }
 
+- (void)captureOutput:(AVCapturePhotoOutput *)output didFinishCaptureForResolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings error:(nullable NSError *)error{
 
--(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(AVCaptureBracketedStillImageSettings *)bracketSettings error:(NSError *)error {
+
+}
+
+-(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhoto:(AVCapturePhoto *)photo error:(NSError *)error  API_AVAILABLE(ios(11.0)){
 
     if (error) {
-
-        NSLog(@"Error in capturing Image");
+        [self.session startRunning];
         return;
+        
     }
-    
-    
-    if (photoSampleBuffer) {
-      NSData * imageData =  [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
-      
-      if (imageData) {
+
+     if (photo) {
+        NSData * imageData = [photo fileDataRepresentation];
         UIImage * capturedImage = [[UIImage alloc]initWithData:imageData scale:1.0];
         if (capturedImage) {
             capturedCachedImage = capturedImage;
@@ -457,13 +522,37 @@ NSString * imageName;
           //  UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
         }
       }
-    
-    } else {
-    // Error
-    
-    }
-
 }
+
+
+//-(void)captureOutput:(AVCapturePhotoOutput *)output didFinishProcessingPhotoSampleBuffer:(CMSampleBufferRef)photoSampleBuffer previewPhotoSampleBuffer:(CMSampleBufferRef)previewPhotoSampleBuffer resolvedSettings:(AVCaptureResolvedPhotoSettings *)resolvedSettings bracketSettings:(AVCaptureBracketedStillImageSettings *)bracketSettings error:(NSError *)error {
+//
+//    if (error) {
+//
+//        [self.session startRunning];
+//        NSLog(@"Error in capturing Image");
+//        return;
+//    }
+//
+//
+//    if (photoSampleBuffer) {
+//      NSData * imageData =  [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:photoSampleBuffer previewPhotoSampleBuffer:previewPhotoSampleBuffer];
+//
+//      if (imageData) {
+//        UIImage * capturedImage = [[UIImage alloc]initWithData:imageData scale:1.0];
+//        if (capturedImage) {
+//            capturedCachedImage = capturedImage;
+//            [self togglePreviewMode:YES];
+//          //  UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
+//        }
+//      }
+//
+//    } else {
+//    // Error
+//
+//    }
+//
+//}
 
 -(void)togglePreviewMode:(BOOL)showPreview{
 
