@@ -14,9 +14,9 @@
 @property (nonatomic,strong) NSString * leftPreviewButtonTitle;
 @property (nonatomic,strong) NSString * rightPreviewButtonTitle;
 
-
-+(instancetype)loadFromStoryBoard;
+// Instance method
 -(instancetype)initWithNib;
+
 
 @end
 
