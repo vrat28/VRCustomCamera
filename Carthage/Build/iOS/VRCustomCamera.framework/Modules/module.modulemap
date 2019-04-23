@@ -1,0 +1,6 @@
+framework module VRCustomCamera {
+  umbrella header "VRCustomCamera.h"
+
+  export *
+  module * { export * }
+}

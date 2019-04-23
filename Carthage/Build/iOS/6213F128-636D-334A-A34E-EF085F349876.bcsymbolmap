@@ -1,0 +1,189 @@
+BCSymbolMap Version: 2.0
+-[CameraViewController initWithNib]
+-[CameraViewController viewDidLoad]
+-[CameraViewController viewWillAppear:]
+-[CameraViewController viewWillDisappear:]
+-[CameraViewController prefersStatusBarHidden]
+-[CameraViewController requestPhtoLibraryPermissions]
+___53-[CameraViewController requestPhtoLibraryPermissions]_block_invoke
+___copy_helper_block_
+___destroy_helper_block_
+-[CameraViewController captureDeviceWithPosition:]
+-[CameraViewController enableCamera]
+-[CameraViewController setUpLiveCameraPreviewLayer]
+___51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke
+___copy_helper_block_.95
+___destroy_helper_block_.96
+___51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke.99
+___51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke_2
+___copy_helper_block_.108
+___destroy_helper_block_.109
+___copy_helper_block_.111
+___destroy_helper_block_.112
+-[CameraViewController setupUI]
+-[CameraViewController togglePreviewMode:]
+-[CameraViewController addBlurViewTo:]
+-[CameraViewController pinView:with:]
+-[CameraViewController enableDefaultFlashStateFor:]
+___51-[CameraViewController enableDefaultFlashStateFor:]_block_invoke
+___copy_helper_block_.189
+___destroy_helper_block_.190
+-[CameraViewController setFlashMode:]
+-[CameraViewController updateFlashButton]
+-[CameraViewController updateFlashModeState]
+-[CameraViewController animateFlashButtonOptions]
+___49-[CameraViewController animateFlashButtonOptions]_block_invoke
+___copy_helper_block_.218
+___destroy_helper_block_.219
+-[CameraViewController currentDevice]
+-[CameraViewController btnDismiss:]
+-[CameraViewController captureClicked:]
+-[CameraViewController switchClicked:]
+___38-[CameraViewController switchClicked:]_block_invoke
+___38-[CameraViewController switchClicked:]_block_invoke_2
+___copy_helper_block_.242
+___destroy_helper_block_.243
+___38-[CameraViewController switchClicked:]_block_invoke.245
+___copy_helper_block_.249
+___destroy_helper_block_.250
+___38-[CameraViewController switchClicked:]_block_invoke.254
+___38-[CameraViewController switchClicked:]_block_invoke_2.255
+___copy_helper_block_.260
+___destroy_helper_block_.261
+___copy_helper_block_.263
+___destroy_helper_block_.264
+___38-[CameraViewController switchClicked:]_block_invoke.270
+___copy_helper_block_.275
+___destroy_helper_block_.276
+-[CameraViewController flashButtonClicked:]
+-[CameraViewController flashModeSeleced:]
+-[CameraViewController btnUsePhotoClicked:]
+-[CameraViewController btnRetakeClicked:]
+-[CameraViewController captureOutput:didFinishProcessingPhoto:error:]
+-[CameraViewController captureOutput:didFinishProcessingPhotoSampleBuffer:previewPhotoSampleBuffer:resolvedSettings:bracketSettings:error:]
+-[CameraViewController handleCapturedImageWith:]
+___48-[CameraViewController handleCapturedImageWith:]_block_invoke
+___copy_helper_block_.303
+___destroy_helper_block_.304
+-[CameraViewController writeToPhotoLibraryWith:]
+-[CameraViewController completionHandler]
+-[CameraViewController setCompletionHandler:]
+-[CameraViewController leftPreviewButtonTitle]
+-[CameraViewController setLeftPreviewButtonTitle:]
+-[CameraViewController rightPreviewButtonTitle]
+-[CameraViewController setRightPreviewButtonTitle:]
+-[CameraViewController topHeaderView]
+-[CameraViewController setTopHeaderView:]
+-[CameraViewController bottomContainerView]
+-[CameraViewController setBottomContainerView:]
+-[CameraViewController cameraView]
+-[CameraViewController setCameraView:]
+-[CameraViewController containerView]
+-[CameraViewController setContainerView:]
+-[CameraViewController btnFlash]
+-[CameraViewController setBtnFlash:]
+-[CameraViewController btnCapture]
+-[CameraViewController setBtnCapture:]
+-[CameraViewController btnSwitch]
+-[CameraViewController setBtnSwitch:]
+-[CameraViewController btnCancel]
+-[CameraViewController setBtnCancel:]
+-[CameraViewController flashContainerView]
+-[CameraViewController setFlashContainerView:]
+-[CameraViewController btnFlashAuto]
+-[CameraViewController setBtnFlashAuto:]
+-[CameraViewController btnFlashOn]
+-[CameraViewController setBtnFlashOn:]
+-[CameraViewController btnFlashOff]
+-[CameraViewController setBtnFlashOff:]
+-[CameraViewController bottomContainerHeight]
+-[CameraViewController setBottomContainerHeight:]
+-[CameraViewController topContainerSpacing]
+-[CameraViewController setTopContainerSpacing:]
+-[CameraViewController bottomCaptureContainerView]
+-[CameraViewController setBottomCaptureContainerView:]
+-[CameraViewController bottomPreviewContainerView]
+-[CameraViewController setBottomPreviewContainerView:]
+-[CameraViewController previewLeftBtn]
+-[CameraViewController setPreviewLeftBtn:]
+-[CameraViewController previewRightBtn]
+-[CameraViewController setPreviewRightBtn:]
+-[CameraViewController session]
+-[CameraViewController setSession:]
+-[CameraViewController stillImageOutput]
+-[CameraViewController setStillImageOutput:]
+-[CameraViewController videoPreviewLayer]
+-[CameraViewController setVideoPreviewLayer:]
+-[CameraViewController flashMode]
+-[CameraViewController blurView]
+-[CameraViewController setBlurView:]
+-[CameraViewController sessionQueue]
+-[CameraViewController setSessionQueue:]
+-[CameraViewController .cxx_destruct]
+_OBJC_IVAR_$_CameraViewController._cameraView
+___block_descriptor_tmp
+___block_descriptor_tmp.98
+___block_descriptor_tmp.110
+___block_descriptor_tmp.113
+_OBJC_IVAR_$_CameraViewController._blurView
+_OBJC_IVAR_$_CameraViewController._topHeaderView
+_OBJC_IVAR_$_CameraViewController._bottomContainerView
+_OBJC_IVAR_$_CameraViewController._bottomCaptureContainerView
+_OBJC_IVAR_$_CameraViewController._bottomPreviewContainerView
+_OBJC_IVAR_$_CameraViewController._btnCapture
+_OBJC_IVAR_$_CameraViewController._leftPreviewButtonTitle
+_OBJC_IVAR_$_CameraViewController._previewLeftBtn
+_OBJC_IVAR_$_CameraViewController._rightPreviewButtonTitle
+_OBJC_IVAR_$_CameraViewController._previewRightBtn
+_OBJC_IVAR_$_CameraViewController._bottomContainerHeight
+_OBJC_IVAR_$_CameraViewController._topContainerSpacing
+___block_descriptor_tmp.191
+_OBJC_IVAR_$_CameraViewController._flashMode
+_OBJC_IVAR_$_CameraViewController._btnFlash
+_OBJC_IVAR_$_CameraViewController._btnFlashOn
+_OBJC_IVAR_$_CameraViewController._btnFlashOff
+_OBJC_IVAR_$_CameraViewController._btnFlashAuto
+___block_descriptor_tmp.220
+_OBJC_IVAR_$_CameraViewController._stillImageOutput
+___block_descriptor_tmp.244
+___block_descriptor_tmp.246
+___block_literal_global
+___block_descriptor_tmp.251
+___block_descriptor_tmp.262
+___block_descriptor_tmp.265
+___block_descriptor_tmp.277
+_OBJC_IVAR_$_CameraViewController._completionHandler
+_OBJC_IVAR_$_CameraViewController.capturedCachedImage
+_OBJC_IVAR_$_CameraViewController.previewImageView
+___block_descriptor_tmp.305
+_OBJC_IVAR_$_CameraViewController._containerView
+_OBJC_IVAR_$_CameraViewController._btnSwitch
+_OBJC_IVAR_$_CameraViewController._btnCancel
+_OBJC_IVAR_$_CameraViewController._flashContainerView
+_OBJC_IVAR_$_CameraViewController._session
+_OBJC_IVAR_$_CameraViewController._videoPreviewLayer
+_OBJC_IVAR_$_CameraViewController._sessionQueue
+l_OBJC_PROTOCOL_$_NSObject
+l_OBJC_LABEL_PROTOCOL_$_NSObject
+l_OBJC_PROTOCOL_$_AVCapturePhotoCaptureDelegate
+l_OBJC_LABEL_PROTOCOL_$_AVCapturePhotoCaptureDelegate
+Apple LLVM version 10.0.0 (clang-1000.11.45.5)
+/Users/varun/Documents/POC Projects/iOS/CustomCamera/CustomCamera/Views/Camera/CameraViewController.m
+/Users/varun/Documents/POC Projects/iOS/CustomCamera
+/Users/varun/Documents/POC Projects/iOS/CustomCamera/CustomCamera/Views/Camera/CameraViewController.h
+__destroy_helper_block_
+__copy_helper_block_
+__48-[CameraViewController handleCapturedImageWith:]_block_invoke
+__38-[CameraViewController switchClicked:]_block_invoke.270
+__38-[CameraViewController switchClicked:]_block_invoke_2.255
+__38-[CameraViewController switchClicked:]_block_invoke.254
+__38-[CameraViewController switchClicked:]_block_invoke.245
+__38-[CameraViewController switchClicked:]_block_invoke_2
+__38-[CameraViewController switchClicked:]_block_invoke
+__49-[CameraViewController animateFlashButtonOptions]_block_invoke
+__51-[CameraViewController enableDefaultFlashStateFor:]_block_invoke
+__51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke_2
+__51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke.99
+__51-[CameraViewController setUpLiveCameraPreviewLayer]_block_invoke
+__53-[CameraViewController requestPhtoLibraryPermissions]_block_invoke
+/Users/varun/Library/Developer/Xcode/DerivedData/CustomCamera-atvbxsjyrxbexzfbwtzhpzjwxvhp/Build/Intermediates.noindex/ArchiveIntermediates/VRCustomCamera/IntermediateBuildFilesPath/CustomCamera.build/Release-iphoneos/VRCustomCamera.build/DerivedSources/VRCustomCamera_vers.c
